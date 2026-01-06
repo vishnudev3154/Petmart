@@ -1,0 +1,85 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Update Form Card */
+.update-container {
+    background-color: #111;
+    padding: 30px 35px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 25px rgba(0, 188, 212, 0.25);
+    border: 1px solid #222;
+}
+
+/* Heading */
+.update-container h2 {
+    text-align: center;
+    color: #00bcd4;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+/* Form */
+.update-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Inputs */
+.update-container input[type="text"],
+.update-container input[type="number"],
+.update-container input[type="file"] {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.update-container input::placeholder {
+    color: #888;
+}
+
+.update-container input:focus {
+    border-color: #00bcd4;
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+}
+
+/* Submit Button */
+.update-container input[type="submit"] {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.update-container input[type="submit"]:hover {
+    background-color: #0097a7;
+    transform: scale(1.03);
+}
+

@@ -1,0 +1,137 @@
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Page Background */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #000000, #0f2027);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+/* Login Box */
+.login-box {
+    background-color: #111;
+    padding: 35px 40px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 188, 212, 0.3);
+    border: 1px solid #222;
+    text-align: center;
+}
+
+/* Heading */
+.login-box h2 {
+    font-size: 1.9rem;
+    color: #00bcd4;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+/* Messages */
+.messages {
+    list-style: none;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+.messages li {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.messages .success {
+    background-color: #1b5e20;
+    color: #c8e6c9;
+}
+
+.messages .error {
+    background-color: #b71c1c;
+    color: #ffcdd2;
+}
+
+/* Form */
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Inputs */
+.login-box input {
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.login-box input::placeholder {
+    color: #888;
+}
+
+.login-box input:focus {
+    border-color: #00bcd4;
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+}
+
+/* Login Button */
+.login-box button {
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.login-box button:hover {
+    background-color: #0097a7;
+    transform: scale(1.03);
+}
+
+/* Footer Text */
+.login-box p {
+    margin-top: 18px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Register Link */
+.login-box a {
+    color: #00bcd4;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-box a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 30px 25px;
+    }
+
+    .login-box h2 {
+        font-size: 1.6rem;
+    }
+}

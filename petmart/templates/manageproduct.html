@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="{% static 'adminpage.css' %}">
+</head>
+
+<body>
+    <div class="nav">
+        <nav class="first_nav">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <ul class="nav-links">
+                <li><a href="../addproduct/">Add Product</a></li>
+                <li><a href="">View Product</a></li>
+                <li><a href=""></a></li>
+            </ul>
+          <a href="../adminpage"><button class="logout">GO Back</button></a>  
+        </nav>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Products</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'viewproduct.css' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="nav">
+    <nav class="first_nav">
+        <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+
+        <ul class="nav-links">
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Manage Product</a>
+                <div class="dropdown-content">
+                    <a href="./addproduct/">Add Pet</a>
+                    <a href="./viewproduct/">View Pet</a>
+                </div>
+            </li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Stock</a></li>
+        </ul>
+
+        <a href="./adminpage/">
+            <button class="logout">Go back</button>
+        </a>
+    </nav>
+</div>
+
+<!-- PRODUCT LIST -->
+<div class="product-container">
+    {% for i in products %}
+        <div class="product-card">
+
+            {% if i.pet_image %}
+                <img src="{{ i.pet_image.url }}" alt="{{ i.name }}">
+            {% else %}
+                <img src="{% static 'media/default_pet.jpg' %}" alt="No Image">
+            {% endif %}
+
+            <h3>{{ i.name }}</h3>
+            <p><strong>Category:</strong> {{ i.category }}</p>
+            <p>{{ i.description }}</p>
+            <p class="price">₹{{ i.pet_price }}</p>
+
+            <div class="button-group">
+                <a href="{% url 'updateproduct' i.pk %}" class="btn update-btn">Update</a>
+                <a href="{% url 'deleteproduct' i.pk %}" class="btn delete-btn">Delete</a>
+            </div>
+
+        </div>
+    {% empty %}
+        <p style="text-align:center;">No products available.</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>
