@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Admin</span>
+                <h4>Update Product</h4>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="./viewproduct/">View Products</a></li>
+        </ul>
+        <div class="topbar-actions">
+            <a class="ghost-btn" href="./viewproduct/">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Back
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <div class="form-card">
+        <p class="eyebrow">Edit listing</p>
+        <h2>Refresh pet details</h2>
+        <p class="subhead">Update information, price, or upload a new photo.</p>
+
+        <form method="post" enctype="multipart/form-data" class="form-grid">
+            {% csrf_token %}
+
+            <input type="text" name="name" value="{{ product.name }}" placeholder="Name" required>
+            <input type="text" name="category" value="{{ product.category }}" placeholder="Category" required>
+            <textarea name="description" rows="3" placeholder="Description" required>{{ product.description }}</textarea>
+            <input type="number" name="pet_price" value="{{ product.pet_price }}" min="0" step="0.01" required>
+            <input type="file" name="pet_image" accept="image/*">
+
+            <div class="form-actions">
+                <a class="ghost-btn" href="./viewproduct/">Cancel</a>
+                <button type="submit" class="primary-btn">Update</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

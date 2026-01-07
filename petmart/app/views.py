@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404,get_list_or_404
 from . models import *
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
+
 
 
 # admin page 
@@ -11,13 +13,13 @@ def adminlogin(request):
     if username=='admin' and password=='admin123':
         return redirect(adminpage)
         
-    return render(request, 'adminlogin.html')
+    return render(request, 'admin/adminlogin.html')
 
 def adminpage(request):
-    return render(request, 'adminpage.html')
+    return render(request, 'admin/adminpage.html')
 
 def manageproduct(request):
-    return render(request, 'manageproduct.html')
+    return render(request, 'admin/manageproduct.html')
 
 
 def addproduct(request):
@@ -31,13 +33,13 @@ def addproduct(request):
         print (data)
         data.save()
         
-    return render(request, 'addproduct.html')
+    return render(request, 'admin/addproduct.html')
 
 
 
 def viewproduct(request):
     products = petdetails.objects.all()
-    return render(request, 'viewproduct.html', {'products': products})
+    return render(request, 'admin/viewproduct.html', {'products': products})
 
 
 
@@ -57,7 +59,7 @@ def viewproductupdate(request, pk):
         product.save()
         return redirect(viewproduct)
 
-    return render(request, 'updateview.html', {'product': product})
+    return render(request, 'admin/updateview.html', {'product': product})
 
 
 
@@ -105,4 +107,78 @@ def register(request):
     return render(request, "user/register.html")
 
 def login(request):
-    return render(request, 'login.html')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user)
+            messages.success(request, "Login successful")
+            return redirect('viewproduct')   # or any dashboard page
+        else:
+            messages.error(request, "Invalid username or password")
+            return redirect(login)
+
+    return render(request, 'user/login.html')
+
+
+def userpage(request):
+    product = petdetails.objects.all()
+    return render(request, 'user/userpage.html',{'products':product})
+
+from django.contrib.auth.decorators import login_required
+from .models import Cart, Wishlist, petdetails
+
+
+def add_to_cart(request, pk):
+    product = get_object_or_404(petdetails, pk=pk)
+    cart_item, created = Cart.objects.get_or_create(
+        user=request.user,
+        product=product
+    )
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    messages.success(request, "Added to cart")
+    return redirect('viewproduct')
+
+
+
+def view_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total = sum(item.product.pet_price * item.quantity for item in cart_items)
+    return render(request, 'cart.html', {
+        'cart_items': cart_items,
+        'total': total
+    })
+
+
+
+def remove_from_cart(request, pk):
+    Cart.objects.filter(id=pk, user=request.user).delete()
+    return redirect('viewcart')
+
+
+
+def add_to_wishlist(request, pk):
+    product = get_object_or_404(petdetails, pk=pk)
+    Wishlist.objects.get_or_create(
+        user=request.User,
+        product=product
+    )
+    messages.success(request, "Added to wishlist")
+    return render(request,'userpage.html')
+
+
+
+def view_wishlist(request):
+    wishlist_items = Wishlist.objects.filter(user=request.User)
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+
+
+
+def remove_from_wishlist(request, pk):
+    Wishlist.objects.filter(id=pk, user=request.user).delete()
+    return redirect('wishlist')

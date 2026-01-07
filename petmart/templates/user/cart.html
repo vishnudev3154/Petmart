@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>My Cart</h2>
+
+{% for item in cart_items %}
+    <p>
+        {{ item.product.name }} -
+        ₹{{ item.product.pet_price }} × {{ item.quantity }}
+        <a href="{% url 'removecart' item.id %}">Remove</a>
+    </p>
+{% empty %}
+    <p>Your cart is empty</p>
+{% endfor %}
+
+<h3>Total: ₹{{ total }}</h3>
+
+</body>
+</html>

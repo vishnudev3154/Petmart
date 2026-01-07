@@ -1,20 +1,3 @@
-"""
-URL configuration for petmart project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -22,18 +5,39 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
+
+    # ---------- Django Admin ----------
     path('admin/', admin.site.urls),
-    path('adminlogin/', views.adminlogin),
-    path('adminpage/', views.adminpage),
-    path('manageproduct/', views.manageproduct),
-    path('addproduct/', views.addproduct),
-    path('viewproduct/', views.viewproduct),
+
+    # ---------- Admin Pages ----------
+    path('adminlogin/', views.adminlogin, name='adminlogin'),
+    path('adminpage/', views.adminpage, name='adminpage'),
+    path('manageproduct/', views.manageproduct, name='manageproduct'),
+
+    path('addproduct/', views.addproduct, name='addproduct'),
+    path('viewproduct/', views.viewproduct, name='viewproduct'),
     path('update/<int:pk>/', views.viewproductupdate, name='updateproduct'),
     path('delete/<int:pk>/', views.viewproductdelet, name='deleteproduct'),
-    path('', views.register),
-    path('login/',views.login)
+
+    # ---------- User Auth ----------
+    path('register/', views.register, name='register'),
+    path('', views.login, name='login'),
+
+    # ---------- User Page ----------
+    path('userpage/', views.userpage, name='userpage'),
+
+    # ---------- Cart ----------
+    path('add-to-cart/<int:pk>/', views.add_to_cart, name='addtocart'),
+    path('cart/', views.view_cart, name='viewcart'),
+    path('remove-cart/<int:pk>/', views.remove_from_cart, name='removecart'),
+
+    # ---------- Wishlist ----------
+    path('add-to-wishlist/<int:pk>/', views.add_to_wishlist, name='addtowishlist'),
+    path('wishlist/', views.view_wishlist, name='wishlist'),
+    path('remove-wishlist/<int:pk>/', views.remove_from_wishlist, name='removewishlist'),
+
 ]
 
-
+# ---------- Media files ----------
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
