@@ -6,19 +6,25 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>My Cart</h2>
+    <h2>🛒 My Cart</h2>
 
 {% for item in cart_items %}
-    <p>
-        {{ item.product.name }} -
-        ₹{{ item.product.pet_price }} × {{ item.quantity }}
-        <a href="{% url 'removecart' item.id %}">Remove</a>
-    </p>
+    <div>
+        <p>
+            {{ item.product.name }} –
+            ₹{{ item.product.pet_price }} × {{ item.quantity }}
+        </p>
+
+        <a href="{% url 'removecart' item.pk %}">
+            Remove
+        </a>
+    </div>
 {% empty %}
     <p>Your cart is empty</p>
 {% endfor %}
 
-<h3>Total: ₹{{ total }}</h3>
+<hr>
+<h3>Total: ₹{{ total_price }}</h3>
 
 </body>
 </html>

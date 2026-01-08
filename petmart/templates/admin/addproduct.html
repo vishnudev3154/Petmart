@@ -1,4 +1,4 @@
-{%  load static  %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 </head>
 <body class="page">
 
@@ -19,12 +19,14 @@
                 <h4>Add New Pet</h4>
             </div>
         </div>
+
         <ul class="nav-links">
-            <li><a href="../adminpage/">Dashboard</a></li>
-            <li><a href="../viewproduct/">View Pets</a></li>
+            <li><a href="{% url 'adminpage' %}">Dashboard</a></li>
+            <li><a href="{% url 'viewproduct' %}">View Pets</a></li>
         </ul>
+
         <div class="topbar-actions">
-            <a class="ghost-btn" href="../adminpage/">
+            <a class="ghost-btn" href="{% url 'adminpage' %}">
                 <span class="material-symbols-outlined">arrow_back</span>
                 Go back
             </a>
@@ -38,12 +40,13 @@
         <h2>Add a new companion</h2>
         <p class="subhead">Upload details, set price, and publish instantly.</p>
 
-        <form action="../addproduct/" method="post" enctype="multipart/form-data" class="form-grid">
+        <!-- ✅ action removed (POSTs to same URL) -->
+        <form method="post" enctype="multipart/form-data" class="form-grid">
             {% csrf_token %}
 
             <select name="category" required>
                 <option value="" disabled selected>Select category</option>
-                <option value="Cat">Cat</option>
+                <option value="cat">Cat</option>
                 <option value="dog">Dog</option>
                 <option value="bird">Bird</option>
                 <option value="rabbit">Rabbit</option>
@@ -52,11 +55,11 @@
 
             <input type="text" name="name" placeholder="Pet name" required>
             <textarea name="description" rows="3" placeholder="Short description" required></textarea>
-            <input type="number" name="pet_price" placeholder="Price (₹)" min="0" step="0.01" required>
+            <input type="number" name="pet_price" placeholder="Price (₹)" min="0" required>
             <input type="file" name="pet_image" accept="image/*" required>
 
             <div class="form-actions">
-                <a class="ghost-btn" href="../viewproduct/">Cancel</a>
+                <a class="ghost-btn" href="{% url 'viewproduct' %}">Cancel</a>
                 <button type="submit" class="primary-btn">Save pet</button>
             </div>
         </form>

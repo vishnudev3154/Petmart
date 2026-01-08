@@ -6,10 +6,10 @@ from app import views
 
 urlpatterns = [
 
-    # ---------- Django Admin ----------
+    #  Django Admin 
     path('admin/', admin.site.urls),
 
-    # ---------- Admin Pages ----------
+    #  Admin Pages 
     path('adminlogin/', views.adminlogin, name='adminlogin'),
     path('adminpage/', views.adminpage, name='adminpage'),
     path('manageproduct/', views.manageproduct, name='manageproduct'),
@@ -19,25 +19,26 @@ urlpatterns = [
     path('update/<int:pk>/', views.viewproductupdate, name='updateproduct'),
     path('delete/<int:pk>/', views.viewproductdelet, name='deleteproduct'),
 
-    # ---------- User Auth ----------
+    #  User Auth 
     path('register/', views.register, name='register'),
     path('', views.login, name='login'),
 
-    # ---------- User Page ----------
+    # User Page 
     path('userpage/', views.userpage, name='userpage'),
 
-    # ---------- Cart ----------
+    # Cart
     path('add-to-cart/<int:pk>/', views.add_to_cart, name='addtocart'),
     path('cart/', views.view_cart, name='viewcart'),
     path('remove-cart/<int:pk>/', views.remove_from_cart, name='removecart'),
 
-    # ---------- Wishlist ----------
-    path('add-to-wishlist/<int:pk>/', views.add_to_wishlist, name='addtowishlist'),
-    path('wishlist/', views.view_wishlist, name='wishlist'),
-    path('remove-wishlist/<int:pk>/', views.remove_from_wishlist, name='removewishlist'),
+
+    #  Wishlist 
+    # path('add-to-wishlist/<int:pk>/', views.add_to_wishlist, name='addtowishlist'),
+    # path('wishlist/', views.view_wishlist, name='wishlist'),
+    # path('remove-wishlist/<int:pk>/', views.remove_from_wishlist, name='removewishlist'),
 
 ]
 
-# ---------- Media files ----------
+#  Media files 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

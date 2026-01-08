@@ -25,8 +25,7 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
-
-
+    
 # WISHLIST MODEL
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

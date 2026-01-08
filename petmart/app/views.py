@@ -3,7 +3,7 @@ from . models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import login_required
 
 
 # admin page 
@@ -39,9 +39,7 @@ def addproduct(request):
 
 def viewproduct(request):
     products = petdetails.objects.all()
-    return render(request, 'admin/viewproduct.html', {'products': products})
-
-
+    return render(request, 'viewproduct.html', {'products': products})
 
 
 def viewproductupdate(request, pk):
@@ -59,8 +57,7 @@ def viewproductupdate(request, pk):
         product.save()
         return redirect(viewproduct)
 
-    return render(request, 'admin/updateview.html', {'product': product})
-
+    return render(request, 'updateview.html', {'product': product})
 
 
 
@@ -116,7 +113,7 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             messages.success(request, "Login successful")
-            return redirect('viewproduct')   # or any dashboard page
+            return redirect('userpage')   # or any dashboard page
         else:
             messages.error(request, "Invalid username or password")
             return redirect(login)
@@ -128,57 +125,41 @@ def userpage(request):
     product = petdetails.objects.all()
     return render(request, 'user/userpage.html',{'products':product})
 
-from django.contrib.auth.decorators import login_required
-from .models import Cart, Wishlist, petdetails
-
-
+@login_required(login_url='login')
 def add_to_cart(request, pk):
     product = get_object_or_404(petdetails, pk=pk)
+
     cart_item, created = Cart.objects.get_or_create(
         user=request.user,
         product=product
     )
+
     if not created:
         cart_item.quantity += 1
         cart_item.save()
-    messages.success(request, "Added to cart")
-    return redirect('viewproduct')
+
+    messages.success(request, "Product added to cart")
+    return redirect('userpage')
 
 
-
+@login_required(login_url='login')
 def view_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
-    total = sum(item.product.pet_price * item.quantity for item in cart_items)
-    return render(request, 'cart.html', {
+
+    total_price = sum(
+        item.product.pet_price * item.quantity
+        for item in cart_items
+    )
+
+    return render(request, 'user/cart.html', {
         'cart_items': cart_items,
-        'total': total
+        'total_price': total_price
     })
 
 
-
+@login_required(login_url='login')
 def remove_from_cart(request, pk):
-    Cart.objects.filter(id=pk, user=request.user).delete()
+    cart_item = get_object_or_404(Cart, pk=pk, user=request.user)
+    cart_item.delete()
+    messages.success(request, "Item removed from cart")
     return redirect('viewcart')
-
-
-
-def add_to_wishlist(request, pk):
-    product = get_object_or_404(petdetails, pk=pk)
-    Wishlist.objects.get_or_create(
-        user=request.User,
-        product=product
-    )
-    messages.success(request, "Added to wishlist")
-    return render(request,'userpage.html')
-
-
-
-def view_wishlist(request):
-    wishlist_items = Wishlist.objects.filter(user=request.User)
-    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
-
-
-
-def remove_from_wishlist(request, pk):
-    Wishlist.objects.filter(id=pk, user=request.user).delete()
-    return redirect('wishlist')
