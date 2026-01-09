@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Orders</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <h3>📦 Order Management</h3>
+        <a class="ghost-btn" href="{% url 'adminpage' %}">⬅ Back</a>
+    </div>
+</header>
+
+<main class="page-shell">
+    <div class="form-card">
+        <h2>All Orders</h2>
+
+        <table border="1" cellpadding="10" width="100%">
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Items</th>
+            </tr>
+
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.user.username }}</td>
+                <td>₹{{ order.total_amount }}</td>
+                <td>
+                    <span style="color:
+                        {% if order.status == 'Completed' %}green
+                        {% elif order.status == 'Pending' %}orange
+                        {% else %}red{% endif %}">
+                        {{ order.status }}
+                    </span>
+                </td>
+                <td>{{ order.created_at|date:"d M Y, h:i A" }}</td>
+                <td>
+                    <ul>
+                        {% for item in order.items.all %}
+                        <li>
+                            {{ item.product.name }} × {{ item.quantity }}
+                            (₹{{ item.price }})
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No orders found</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

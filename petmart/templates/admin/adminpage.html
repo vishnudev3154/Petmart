@@ -20,8 +20,11 @@
             </div>
         </div>
         <ul class="nav-links">
-            <li><a href="../addproduct/">Add Pet</a></li>
-            <li><a href="../viewproduct/">View Pets</a></li>
+            <li><a href="{% url 'manageproduct' %}">Manage product</a></li>
+            <li><a href="../users/">Manage Users</a></li>
+<li><a href="{% url 'adminorders' %}">Orders</a></li>
+
+
         </ul>
         <div class="topbar-actions">
             <a class="primary-btn" href="../adminlogin/">
@@ -40,7 +43,7 @@
             <p class="subhead">Quick links to add new listings, review inventory, and track performance.</p>
             <div class="hero-actions">
                 <a href="../addproduct/" class="primary-btn">Add a pet</a>
-                <a href="../viewproduct/" class="ghost-btn">View inventory</a>
+                <a href="{% url 'manageproduct' %}/" class="ghost-btn">View inventory</a>
             </div>
         </div>
         <div class="hero-card">

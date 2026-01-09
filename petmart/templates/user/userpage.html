@@ -43,13 +43,13 @@
             </ul>
 
             <div class="topbar-actions">
-                <a class="ghost-btn" href="./add-to-wishlist/">
+                <a class="ghost-btn" href="{% url 'wishlist' %}">
 Wishlist
 <span class="material-symbols-outlined">
 favorite
 </span>
                 </a>
-                <a class="ghost-btn" href="../add-to-cart/{{}}">
+                <a href="{% url 'viewcart' %}">
 Cart
 <span class="material-symbols-outlined">
 shopping_cart
@@ -115,6 +115,13 @@ logout
             <button class="chip">Exotics</button>
         </div> -->
     </section> 
+ <!-- {% if messages %}
+            <ul class="messages">
+                {% for msg in messages %}
+                    <li class="{{ msg.tags }}">{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %} -->
 
     <!-- PRODUCT LIST -->
     <div class="product-container">
@@ -143,12 +150,13 @@ logout
 
             <!-- ACTION BUTTONS -->
             <div class="action-buttons">
-                <a href="./add-to-cart" class="btn cart-btn">
+                <a href="{% url 'addtocart' i.pk %}" class="primary-btn">
+
                    <span class="material-symbols-outlined">
 add_shopping_cart
 </span>
                 </a>
-                <a href="./add-to-wishlist" class="btn wish-btn">
+                <a href="{% url 'addtowishlist' i.pk %}" class="btn wish-btn">
                     <span class="material-symbols-outlined">favorite</span>
                     Wishlist
                 </a>

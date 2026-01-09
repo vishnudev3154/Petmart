@@ -26,13 +26,7 @@
         <h2>Access your account</h2>
         <p class="subhead">Track orders, manage wishlist, and explore new arrivals.</p>
 
-        {% if messages %}
-            <ul class="messages">
-                {% for msg in messages %}
-                    <li class="{{ msg.tags }}">{{ msg }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+       
 
         <form method="post" action="../" class="form-grid">
             {% csrf_token %}

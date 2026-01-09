@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Update Product</title>
     <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 </head>
 <body class="page">
 
@@ -18,11 +18,9 @@
                 <h4>Update Product</h4>
             </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="./viewproduct/">View Products</a></li>
-        </ul>
+
         <div class="topbar-actions">
-            <a class="ghost-btn" href="./viewproduct/">
+            <a class="ghost-btn" href="{% url 'manageproduct' %}">
                 <span class="material-symbols-outlined">arrow_back</span>
                 Back
             </a>
@@ -34,19 +32,40 @@
     <div class="form-card">
         <p class="eyebrow">Edit listing</p>
         <h2>Refresh pet details</h2>
-        <p class="subhead">Update information, price, or upload a new photo.</p>
+        <p class="subhead">Update information, price, stock, or upload a new photo.</p>
 
         <form method="post" enctype="multipart/form-data" class="form-grid">
             {% csrf_token %}
 
-            <input type="text" name="name" value="{{ product.name }}" placeholder="Name" required>
-            <input type="text" name="category" value="{{ product.category }}" placeholder="Category" required>
+            <!-- CATEGORY -->
+            <select name="category" required>
+                <option value="cat" {% if product.category == "cat" %}selected{% endif %}>Cat</option>
+                <option value="dog" {% if product.category == "dog" %}selected{% endif %}>Dog</option>
+                <option value="bird" {% if product.category == "bird" %}selected{% endif %}>Bird</option>
+                <option value="rabbit" {% if product.category == "rabbit" %}selected{% endif %}>Rabbit</option>
+                <option value="fish" {% if product.category == "fish" %}selected{% endif %}>Fish</option>
+            </select>
+
+            <!-- NAME -->
+            <input type="text" name="name" value="{{ product.name }}" placeholder="Pet name" required>
+
+            <!-- DESCRIPTION -->
             <textarea name="description" rows="3" placeholder="Description" required>{{ product.description }}</textarea>
-            <input type="number" name="pet_price" value="{{ product.pet_price }}" min="0" step="0.01" required>
+
+            <!-- PRICE -->
+            <input type="number" name="pet_price" value="{{ product.pet_price }}" min="0" required>
+
+            <!-- ✅ STOCK FIELD (ADDED) -->
+            <input type="number" name="stock" value="{{ product.stock }}" min="0" required placeholder="Available stock">
+
+            <!-- IMAGE -->
             <input type="file" name="pet_image" accept="image/*">
+            {% if product.pet_image %}
+                <small>Current image will be kept if not replaced</small>
+            {% endif %}
 
             <div class="form-actions">
-                <a class="ghost-btn" href="./viewproduct/">Cancel</a>
+                <a class="ghost-btn" href="{% url 'manageproduct' %}">Cancel</a>
                 <button type="submit" class="primary-btn">Update</button>
             </div>
         </form>

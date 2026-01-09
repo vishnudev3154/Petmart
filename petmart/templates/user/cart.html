@@ -1,30 +1,60 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Cart</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
 </head>
-<body>
-    <h2>🛒 My Cart</h2>
 
-{% for item in cart_items %}
-    <div>
-        <p>
-            {{ item.product.name }} –
-            ₹{{ item.product.pet_price }} × {{ item.quantity }}
-        </p>
+<body class="page">
 
-        <a href="{% url 'removecart' item.pk %}">
-            Remove
-        </a>
+<header class="topbar">
+    <div class="first_nav">
+        <h3>🛒 My Cart</h3>
+        <a href="{% url 'userpage' %}" class="ghost-btn">⬅ Continue Shopping</a>
     </div>
-{% empty %}
-    <p>Your cart is empty</p>
-{% endfor %}
+</header>
 
-<hr>
-<h3>Total: ₹{{ total_price }}</h3>
+<main class="cart-container">
+
+{% if cart_items %}
+
+    {% for item in cart_items %}
+    <div class="cart-item">
+        <img src="{{ item.product.pet_image.url }}" alt="{{ item.product.name }}">
+
+        <div class="cart-details">
+            <h3>{{ item.product.name }}</h3>
+            <p>{{ item.product.description }}</p>
+            <p><strong>Price:</strong> ₹{{ item.product.pet_price }}</p>
+            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+
+            <a href="{% url 'removecart' item.id %}" class="danger-btn">
+                Remove
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="summary">
+        Total Price: ₹{{ total_price }}
+
+        <div style="margin-top:15px;">
+            <a href="{% url 'buyall' %}" class="primary-btn">
+                Buy All Now
+            </a>
+        </div>
+    </div>
+
+{% else %}
+    <div class="empty">
+        <h2>Your cart is empty 😔</h2>
+        <a href="{% url 'userpage' %}" class="primary-btn">Shop Now</a>
+    </div>
+{% endif %}
+
+</main>
 
 </body>
 </html>

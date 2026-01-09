@@ -1,22 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Wishlist</title>
 </head>
 <body>
-    <h2>My Wishlist</h2>
 
-{% for item in wishlist_items %}
-    <p>
-        {{ item.product.name }} -
-        ₹{{ item.product.pet_price }}
-        <a href="{% url 'removewishlist' item.id %}">Remove</a>
-    </p>
-{% empty %}
-    <p>Your wishlist is empty</p>
-{% endfor %}
+<h2>❤️ My Wishlist</h2>
+
+{% if wishlist_items %}
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Pet</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+
+    {% for item in wishlist_items %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>₹{{ item.product.pet_price }}</td>
+        <td>
+            <a href="{% url 'removewishlist' item.id %}">Remove</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+<p>Your wishlist is empty 💔</p>
+{% endif %}
+
+<a href="{% url 'userpage' %}">⬅ Back to shop</a>
 
 </body>
 </html>
