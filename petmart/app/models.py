@@ -63,12 +63,13 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} - {self.user.username}"
 
+from django.utils import timezone
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey('petdetails', on_delete=models.CASCADE)
+    product = models.ForeignKey(petdetails, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.IntegerField()
+    order_date = models.DateField(default=timezone.now)
+    delivary_date = models.DateField(blank=True, null=True)
 
-    def __str__(self):
-        return f"{self.product.name} ({self.quantity})"

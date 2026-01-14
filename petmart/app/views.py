@@ -7,7 +7,8 @@ from .models import *
 from datetime import date, timedelta
 
 
-# ===================== ADMIN SECTION =====================
+#    ADMIN SECTION 
+
 
 def adminlogin(request):
     if request.method == "POST":
@@ -234,6 +235,12 @@ def remove_from_wishlist(request, pk):
 
 # ===================== BUY NOW =====================
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from datetime import date, timedelta
+from .models import Cart, Order, OrderItem
+
 @login_required(login_url='login')
 def buy_all_payment(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -242,10 +249,10 @@ def buy_all_payment(request):
         messages.error(request, "Your cart is empty")
         return redirect('viewcart')
 
-    total_price = sum(
-        item.product.pet_price * item.quantity
-        for item in cart_items
-    )
+    total_price = sum(item.subtotal for item in cart_items)
+
+    order_date = date.today()
+    delivery_date = order_date + timedelta(days=5)
 
     if request.method == "POST":
         order = Order.objects.create(
@@ -253,6 +260,8 @@ def buy_all_payment(request):
             total_amount=total_price,
             status="Completed"
         )
+
+        product_list = []  # For email content
 
         for item in cart_items:
             if item.quantity > item.product.stock:
@@ -266,17 +275,59 @@ def buy_all_payment(request):
                 order=order,
                 product=item.product,
                 quantity=item.quantity,
-                price=item.product.pet_price
+                price=item.product.pet_price,
+                order_date=order_date,
+                delivary_date=delivery_date
+            )
+
+            product_list.append(
+                f"{item.product.name} × {item.quantity} = ₹{item.subtotal}"
             )
 
             item.product.stock -= item.quantity
             item.product.save()
 
         cart_items.delete()
-        messages.success(request, "Payment successful 🎉 Order placed")
+
+        # ================= EMAIL =================
+        subject = "🧾 Order Confirmation - PetMart"
+        message = f"""
+Hello {request.user.username},
+
+Thank you for your purchase! 🎉
+
+🛒 Order ID: {order.id}
+📅 Order Date: {order_date}
+🚚 Expected Delivery: {delivery_date}
+
+🧾 Items Purchased:
+{chr(10).join(product_list)}
+
+💰 Total Amount: ₹{total_price}
+
+Payment Method: Cash on Delivery
+
+Thank you for shopping with PetMart 🐾
+We hope to see you again!
+
+Regards,
+PetMart Team
+"""
+ send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [request.user.email],
+            fail_silently=False,
+        )
+        # =========================================
+
+        messages.success(request, "🎉 Order placed successfully! Confirmation email sent.")
         return redirect('userpage')
 
     return render(request, "user/payment.html", {
         "cart_items": cart_items,
-        "total_price": total_price
+        "total_price": total_price,
+        "today": order_date,
+        "fdate": delivery_date,
     })
