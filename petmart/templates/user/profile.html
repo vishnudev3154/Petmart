@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <style>
+        .profile-card{
+            max-width: 500px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,.08);
+        }
+        input{
+            width:100%;
+            padding:10px;
+            margin-bottom:12px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        }
+        .btn{
+            background:#0f172a;
+            color:white;
+            padding:12px;
+            width:100%;
+            border:none;
+            border-radius:8px;
+        }
+    </style>
+</head>
+
+<body class="page">
+
+<div class="profile-card">
+    <h2>My Profile</h2>
+
+    {% if messages %}
+        {% for msg in messages %}
+            <p style="color:green">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Username</label>
+        <input type="text" value="{{ user.username }}" readonly>
+
+        <label>First Name</label>
+        <input type="text" name="first_name" value="{{ user.first_name }}">
+
+        <label>Last Name</label>
+        <input type="text" name="last_name" value="{{ user.last_name }}">
+
+        <label>Email</label>
+        <input type="email" name="email" value="{{ user.email }}">
+
+        <button class="btn">Update Profile</button>
+    </form>
+</div>
+
+</body>
+</html>
+   
+</body>
+</html>

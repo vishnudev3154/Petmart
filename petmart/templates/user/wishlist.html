@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Saved items</span>
+                <h4>My Wishlist</h4>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'userpage' %}">Shop</a></li>
+            <li><a href="{% url 'viewcart' %}">Cart</a></li>
+        </ul>
+
+        <div class="topbar-actions">
+            <a class="ghost-btn" href="{% url 'userpage' %}">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Your favorites</p>
+            <h1>Wishlist</h1>
+            <p class="subhead">Pets you've saved for later. Add them to cart when you're ready!</p>
+        </div>
+        <div class="hero-card">
+            <div class="stat">
+                <span class="material-symbols-outlined">favorite</span>
+                <div>
+                    <p class="stat-label">Saved items</p>
+                    <p class="stat-value">{{ wishlist_items|length|default:"0" }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if wishlist_items %}
+    <div class="product-container">
+        {% for item in wishlist_items %}
+        <div class="product-card">
+            <div class="card-media">
+                {% if item.product.pet_image %}
+                    <img src="{{ item.product.pet_image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                    <img src="{% static 'media/default_pet.jpg' %}" alt="No Image">
+                {% endif %}
+                <span class="badge">{{ item.product.category }}</span>
+                <span class="price-tag">₹{{ item.product.pet_price }}</span>
+            </div>
+
+            <div class="card-body">
+                <div class="title-row">
+                    <h3>{{ item.product.name }}</h3>
+                    <span class="pill success">
+                        <span class="material-symbols-outlined">favorite</span>
+                        Saved
+                    </span>
+                </div>
+                <p class="description">{{ item.product.description|default:"No description provided."|truncatechars:120 }}</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{% url 'addtocart' item.product.pk %}" class="primary-btn">
+                    <span class="material-symbols-outlined">add_shopping_cart</span>
+                    Add to Cart
+                </a>
+                <a href="{% url 'removewishlist' item.id %}" class="btn wish-btn" onclick="return confirm('Remove from wishlist?');">
+                    <span class="material-symbols-outlined">delete</span>
+                    Remove
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-card">
+            <span class="material-symbols-outlined" style="font-size: 64px; color: var(--muted);">favorite_border</span>
+            <h3>Your wishlist is empty</h3>
+            <p>Start saving your favorite pets for later!</p>
+            <a href="{% url 'userpage' %}" class="primary-btn">Browse Pets</a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+<style>
+body.page {
+    background: #f8fafc;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+}
+h2 {
+    margin-bottom: 24px;
+    font-size: 28px;
+    font-weight: bold;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+.card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+}
+label {
+    font-weight: bold;
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+}
+.btn {
+    width: 100%;
+    background: #0f172a;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+}
+.item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.item img {
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
+}
+@media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body class="page">
+<div class="container">
+<h2>Payment</h2>
+
+<div class="grid">
+
+<!-- BILLING -->
+<div class="card">
+<form method="POST" action="{% url 'buyall' %}">
+{% csrf_token %}
+
+<label>Full Name</label>
+<input type="text" name="name" required>
+
+<label>Email</label>
+<input type="email" value="{{ request.user.email }}">
+
+<label>Address</label>
+<textarea name="address" rows="3" required></textarea>
+
+<p><strong>Payment:</strong> Cash on Delivery</p>
+<button type="submit" class="btn">Confirm Payment</button>
+</form>
+</div>
+
+<!-- ORDER SUMMARY -->
+<div class="card">
+<h3>Order Summary</h3>
+
+{% for item in cart_items %}
+<div class="item">
+<img src="{{ item.product.pet_image.url }}">
+<div>
+<p>{{ item.product.name }}</p>
+<p>₹ {{ item.product.pet_price }} × {{ item.quantity }}</p>
+</div>
+</div>
+{% endfor %}
+
+<hr>
+<p><strong>Total:</strong> ₹ {{ total_price }}</p>
+<p><strong>Order Date:</strong> {{ today }}</p>
+<p><strong>Delivery:</strong> {{ fdate }}</p>
+</div>
+
+</div>
+</div>
+</body>
+</html>

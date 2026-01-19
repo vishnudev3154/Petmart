@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Admin</span>
+                <h4>PetMart Control</h4>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'manageproduct' %}">Manage product</a></li>
+            <li><a href="../users/">Manage Users</a></li>
+<li><a href="{% url 'adminorders' %}">Orders</a></li>
+
+
+        </ul>
+        <div class="topbar-actions">
+            <a href="{% url 'admin_logout' %}" class="primary-btn">
+                <span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Welcome back</p>
+            <h1>Manage your pet marketplace</h1>
+            <p class="subhead">Quick links to add new listings, review inventory, and track performance.</p>
+            <div class="hero-actions">
+                <a href="../addproduct/" class="primary-btn">Add a pet</a>
+                <a href="{% url 'manageproduct' %}/" class="ghost-btn">View inventory</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="stat">
+                <span class="material-symbols-outlined">pets</span>
+                <div>
+                    <p class="stat-label">Active listings</p>
+                    <p class="stat-value">--</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <div>
+                    <p class="stat-label">Stock checks</p>
+                    <p class="stat-value">Ready</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="material-symbols-outlined">shield</span>
+                <div>
+                    <p class="stat-label">Admin status</p>
+                    <p class="stat-value">Authenticated</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

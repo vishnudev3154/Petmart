@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Welcome</span>
+                <h4>Admin Sign In</h4>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <div class="form-card">
+        <p class="eyebrow">Secure access</p>
+        <h2>Sign in to dashboard</h2>
+        <p class="subhead">Manage products, orders, and stock from one place.</p>
+
+        <!-- ✅ Correct Django URL -->
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <div class="form-actions">
+                <button type="submit" class="primary-btn">Login</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

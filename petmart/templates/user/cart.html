@@ -1,0 +1,336 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+    <style>
+        .cart-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .cart-items-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .cart-item-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            gap: 20px;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cart-item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 38px rgba(31,37,50,0.12);
+        }
+
+        .cart-item-image {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cart-item-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text);
+        }
+
+        .cart-item-info .description {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .cart-item-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .cart-item-meta span {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .cart-item-meta strong {
+            color: var(--text);
+        }
+
+        .cart-item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .cart-item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .delete-btn {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            padding: 8px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background: rgba(231, 76, 60, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .cart-summary {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 100px;
+        }
+
+        .cart-summary h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            color: var(--text);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-row:last-of-type {
+            border-bottom: none;
+            margin-top: 8px;
+            padding-top: 16px;
+            border-top: 2px solid var(--border);
+        }
+
+        .summary-row.total {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .summary-row span {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .summary-row.total span {
+            color: var(--text);
+            font-size: 20px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        .empty-cart {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            padding: 60px 0;
+        }
+
+        @media (max-width: 968px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+
+            .cart-item-card {
+                grid-template-columns: 120px 1fr;
+                gap: 16px;
+            }
+
+            .cart-item-actions {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 12px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cart-item-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .cart-item-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .cart-item-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Shopping</span>
+                <h4>My Cart</h4>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'userpage' %}">Shop</a></li>
+            <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+        </ul>
+
+        <div class="topbar-actions">
+            <a class="ghost-btn" href="{% url 'userpage' %}">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Your cart</p>
+            <h1>Shopping Cart</h1>
+            <p class="subhead">Review your items and proceed to checkout when ready.</p>
+        </div>
+        <div class="hero-card">
+            <div class="stat">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <div>
+                    <p class="stat-label">Items</p>
+                    <p class="stat-value">{{ cart_items|length|default:"0" }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if cart_items %}
+    <div class="cart-layout">
+        <div class="cart-items-section">
+            {% for item in cart_items %}
+            <div class="cart-item-card">
+                <img src="{{ item.product.pet_image.url }}" alt="{{ item.product.name }}" class="cart-item-image">
+                
+                <div class="cart-item-info">
+                    <h3>{{ item.product.name }}</h3>
+                    <p class="description">{{ item.product.description|default:"No description provided."|truncatechars:100 }}</p>
+                    <div class="cart-item-meta">
+                        <span><strong>Category:</strong> {{ item.product.category|capfirst }}</span>
+                        <span><strong>Quantity:</strong> {{ item.quantity }}</span>
+                        <span><strong>Unit Price:</strong> ₹{{ item.product.pet_price }}</span>
+                    </div>
+                </div>
+
+                <div class="cart-item-actions">
+                    <div class="cart-item-price">₹{{ item.subtotal }}</div>
+                    <a href="{% url 'removecart' item.id %}" class="delete-btn" onclick="return confirm('Remove this item from cart?');">
+                        <span class="material-symbols-outlined">delete</span>
+                        Remove
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            
+            <div class="summary-row">
+                <span>Items ({{ cart_items|length }})</span>
+                <span>₹{{ total_price }}</span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>Free</span>
+            </div>
+            
+            <div class="summary-row total">
+                <span>Total</span>
+                <span>₹{{ total_price }}</span>
+            </div>
+
+            <a href="{% url 'buyall' %}" class="primary-btn checkout-btn">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                Proceed to Checkout
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <div class="empty-card">
+            <span class="material-symbols-outlined" style="font-size: 64px; color: var(--muted);">shopping_cart</span>
+            <h3>Your cart is empty</h3>
+            <p>Add some adorable pets to your cart to get started!</p>
+            <a href="{% url 'userpage' %}" class="primary-btn">Browse Pets</a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+
+</body>
+</html>

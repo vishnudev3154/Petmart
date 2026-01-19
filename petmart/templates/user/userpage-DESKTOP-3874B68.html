@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Products</title>
+
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+</head>
+
+<body class="page">
+
+    <!-- NAVBAR -->
+    <header class="topbar">
+        <div class="first_nav">
+            <div class="brand">
+                <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+                <div class="brand-text">
+                    <span class="eyebrow">Dashboard</span>
+                    <h4>PetMart Storefront</h4>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li class="dropdown">
+                    <a href="{% url 'profile' %}" class="ghost-btn">
+    Profile
+    <span class="material-symbols-outlined">person</span>
+</a>
+
+
+                </li>
+
+                <li><a href="#">About</a></li>
+            </ul>
+
+            <div class="topbar-actions">
+                <a class="ghost-btn" href="{% url 'wishlist' %}">
+Wishlist
+<span class="material-symbols-outlined">
+favorite
+</span>
+                </a>
+                <a href="{% url 'viewcart' %}">
+Cart
+<span class="material-symbols-outlined">
+shopping_cart
+</span>
+                </a>
+                <a class="primary-btn" href="{% url 'logout' %}">
+                    Logout
+<span class="material-symbols-outlined">
+logout
+</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Welcome back</p>
+            <h1>Delight shoppers with adorable companions</h1>
+            <p class="subhead">Curate, highlight, and promote your pets in a beautiful storefront experience.</p>
+            <div class="hero-actions">
+                <a href="./viewproduct/" class="primary-btn">View inventory</a>
+                <a href="#products" class="ghost-btn">Browse listings</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="stat">
+                <span class="material-symbols-outlined">pets</span>
+                <div>
+                    <p class="stat-label">Active listings</p>
+                    <p class="stat-value">{{ products|length|default:"0" }}</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="material-symbols-outlined">local_shipping</span>
+                <div>
+                    <p class="stat-label">Fast delivery</p>
+                    <p class="stat-value">Nationwide</p>
+                </div>
+            </div>
+            <div class="stat">
+                <span class="material-symbols-outlined">verified</span>
+                <div>
+                    <p class="stat-label">Trusted care</p>
+                    <p class="stat-value">Certified vets</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTER BAR -->
+   <section class="toolbar" id="products">
+    <form method="GET" class="flex gap-4 w-full">
+
+        <!-- SEARCH -->
+        <div class="search">
+            <span class="material-symbols-outlined">search</span>
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search pets by name"
+                value="{{ search|default:'' }}"
+            >
+        </div>
+
+        <!-- CATEGORY FILTER -->
+        <select name="category" class="border px-3 py-2 rounded" class="dropdown-content">
+            <option value="all">All Categories</option>
+            <option value="dog" {% if selected_category == "dog" %}selected{% endif %}>Dog</option>
+            <option value="cat" {% if selected_category == "cat" %}selected{% endif %}>Cat</option>
+            <option value="bird" {% if selected_category == "bird" %}selected{% endif %}>Bird</option>
+            <option value="fish" {% if selected_category == "fish" %}selected{% endif %}>Fish</option>
+            <option value="rabbit" {% if selected_category == "rabbit" %}selected{% endif %}>Rabbit</option>
+        </select>
+
+        <!-- BUTTON -->
+        <button type="submit" class="primary-btn">
+            Filter
+        </button>
+    </form>
+</section>
+
+ <!-- {% if messages %}
+            <ul class="messages">
+                {% for msg in messages %}
+                    <li class="{{ msg.tags }}">{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %} -->
+
+    <!-- PRODUCT LIST -->
+    <div class="product-container">
+        {% for i in products %}
+        <div class="product-card">
+            <div class="card-media">
+                {% if i.pet_image %}
+                <img src="{{ i.pet_image.url }}" alt="{{ i.name }}">
+                {% else %}
+                <img src="{% static 'media/default_pet.jpg' %}" alt="No Image">
+                {% endif %}
+                <span class="badge">{{ i.category }}</span>
+                <span class="price-tag">₹{{ i.pet_price }}</span>
+            </div>
+
+            <div class="card-body">
+                <div class="title-row">
+                    <h3>{{ i.name }}</h3>
+                    <span class="pill success">
+                        <span class="material-symbols-outlined">health_and_safety</span>
+                        Vet cleared
+                    </span>
+                </div>
+                <p class="description">{{ i.description|default:"No description provided."|truncatechars:120 }}</p>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-buttons">
+                <a href="{% url 'addtocart' i.pk %}" class="primary-btn">
+
+                   <span class="material-symbols-outlined">
+add_shopping_cart
+</span>
+                </a>
+                <a href="{% url 'addtowishlist' i.pk %}" class="btn wish-btn">
+                    <span class="material-symbols-outlined">favorite</span>
+                    Wishlist
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <div class="empty-card">
+                <span class="material-symbols-outlined">sentiment_dissatisfied</span>
+                <h3>No products yet</h3>
+                <p>Start by adding a new pet to showcase in your store.</p>
+                <a href="./addproduct/" class="primary-btn">Add your first pet</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+</body>
+
+</html>

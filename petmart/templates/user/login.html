@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Login</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Welcome back</span>
+                <h4>Sign in</h4>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <div class="form-card">
+        <p class="eyebrow">Customer login</p>
+        <h2>Access your account</h2>
+        <p class="subhead">Track orders, manage wishlist, and explore new arrivals.</p>
+
+       
+
+        <form method="post" action="../" class="form-grid">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+
+            <div class="form-actions">
+                <button type="submit" class="primary-btn">Login</button>
+                <a class="muted-link" href="./register">Don’t have an account? Register</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

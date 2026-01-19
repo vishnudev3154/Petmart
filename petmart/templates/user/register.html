@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+    <link rel="stylesheet" href="{% static 'user/userpage.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&">
+</head>
+<body class="page">
+
+<header class="topbar">
+    <div class="first_nav">
+        <div class="brand">
+            <img src="{% static 'image/logo.png' %}" alt="PetMart Logo">
+            <div class="brand-text">
+                <span class="eyebrow">Welcome</span>
+                <h4>Create account</h4>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <div class="form-card">
+        <p class="eyebrow">Join PetMart</p>
+        <h2>Create your account</h2>
+        <p class="subhead">Shop the cutest companions and manage your orders with ease.</p>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for msg in messages %}
+                    <li class="{{ msg.tags }}">{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %} 
+
+        <form action="../register/" method="post" enctype="multipart/form-data" class="form-grid">
+            {%csrf_token%}
+
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="email" name="email" placeholder="Enter Email Address" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+            <input type="password" name="confirm" placeholder="Confirm Password" required>
+
+            <div class="form-actions">
+                <button type="submit" class="primary-btn">Register</button>
+                <a class="muted-link" href="./">Already have an account? Login</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>
